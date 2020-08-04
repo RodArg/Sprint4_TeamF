@@ -1,4 +1,4 @@
-//https://github.com/thelinmichael/spotify-web-api-node/blob/master/src/spotify-web-api.js
+
 const express = require('express');
 
 const path = require('path');
