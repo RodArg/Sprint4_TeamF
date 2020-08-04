@@ -11,15 +11,20 @@ text = pytesseract.image_to_string(img)
 print("images/text1.png:", text)
 
 def get_text(images):
+    receipts = []
     for img_name in images:
         print("Looking at:", img_name)
-        img_name = "images/"+img_name
+        img_path = "images/"+img_name
         try:
-            img = cv2.imread(img_name)
-            text = pytesseract.image_to_string(img)
-            print(img_name, ":", text)
+            img = cv2.imread(img_path)
+            img_text = pytesseract.image_to_string(img)
+            receipts.append(img_text)
+            print(img_name, ":")
+            print(img_text)
             print("-"*20)
         except:
             print(img_name, " image object unsupported")
+    return receipts
+
 
 print(os.listdir(os.getcwd()+"/images"))
