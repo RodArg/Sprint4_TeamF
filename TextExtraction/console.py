@@ -1,6 +1,6 @@
 import os
 import pytess_extract as tess
-import gcv_extract as gcv
+#import gcv_extract as gcv
 import dateparser as dp
 
 path = os.getcwd()
