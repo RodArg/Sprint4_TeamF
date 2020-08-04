@@ -1,23 +1,58 @@
 import os
 import pytess_extract as tess
-#import gcv_extract as gcv
+import gcv_extract as gcv
 import dateparser as dp
+import datetime
 
 path = os.getcwd()
 img_folder = os.listdir(path+"/images")
 
-
 ## TODO:
 # Extract the date
-    # Try importing dateparser or datefinder and
+    # Try importing dateparser or datefinder
+        # Explore statements that find common formats (YYYY/MM/DD, YY-MM-DD, DD Month YY, etc)
     # https://github.com/scrapinghub/dateparser
     # https://github.com/akoumjian/datefinder
 # Extract the category
-    # P
+    # Company title
+    # We have to figure out how to isolate the category
+# Extract the payment
+    # Usually listed next to "Total"
+    # Select a list of words we can parse for (e.g. Total, Subtotal, Check Amount)
+    #   and get the first number with a decimal after that word
+
+
+class Receipt:
+    def __init__(self, date="DD/MM/YYYY", category="undefined", amount=0):
+        self.date = date
+        self.category = category
+        self.amount = amount
+
+    def __str__(self):
+        return "Date: {} Category: {} Amount: {}".format(self.date, self.category, self.amount)
+
+    def set_date(self, date):
+        self.date = date
+
+    def set_category(self, category):
+        self.category = category
+
+    def set_amount(self, amount):
+        self.amount = amount
+
+    def get_date(self):
+        return self.date
+
+    def get_category(self):
+        return self.category
+
+    def get_amount(self):
+        return self.amount
+
 
 def only_images(files):
     """
-    Will return a list containing only .jpg, .png, and .jpeg
+    Takes a list of filenames, return a list of only .jpg, .png, and .jpeg filenames
     """
     img_files = []
     # print("files at first:", files)
@@ -28,20 +63,22 @@ def only_images(files):
             img_files.append(filename)
     return img_files
 
+
 def extract_text():
     """
     Prints out the text of the files provided to either PyTesseract or Google Cloud Vision
+    Returns a list of long strings of receipts, not individual words
     """
     files = []
     for img_name in img_folder:
         files.append(img_name)
-    # Get rid of non-image files
     files = only_images(files)
-    # print("files:", files)
+
     print("Here are the files available:")
     for i in range(len(files)):
         print("({}) {}".format(i, files[i]),sep="\n")
     print()
+
     inp = input("Choose a file to extract or extract (all)\n")
     if (inp.lower() != "all"):
         inp = int(inp)
@@ -49,18 +86,30 @@ def extract_text():
 
     tool = input("GCV or Tess?\n")
     if (tool.lower() == "gcv"):
-        gcv.detect_text(files, path+"/images/")
+        receipts = gcv.detect_text(files, path+"/images/")
     else:
-        tess.get_text(files)
+        receipts = tess.get_text(files)
+    return receipts
+
 
 def get_date(text):
     pass
 
+
 def get_category(text):
     pass
 
-# Run this to test out pytesseract or gcv on your images
-extract_text()
 
+def get_amount(text):
+    pass
 
+# Main
+text = extract_text()
+date = get_date(text)
+category = get_category(text)
+amount = get_amount(text)
+receipt = Receipt(date, category, amount)
+
+# Next steps
+# Pass receipt var to a function that updates the database
 
