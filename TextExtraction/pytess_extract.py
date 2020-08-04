@@ -59,4 +59,5 @@ def get_total(img_text) -> float:
             return total
     return -1
 
+
 print(os.listdir(os.getcwd()+"/images"))
