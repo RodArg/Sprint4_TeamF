@@ -11,6 +11,7 @@
 import os
 import datetime
 import sys
+import json
 import pytess_extract as tess
 # import gcv_extract as gcv
 import dateparser as dp
@@ -18,8 +19,8 @@ from dateparser.search import search_dates
 
 
 path = os.getcwd()
-img_folder = os.listdir(path+"/TextExtraction/images") # Use this line when executing outside TextExtraction
-# img_folder = os.listdir(path+"/images") # Use this line when running from IDE
+# img_folder = os.listdir(path+"/TextExtraction/images") # Use this line when executing outside TextExtraction
+img_folder = os.listdir(path+"/images") # Use this line when running from IDE
 
 
 class Receipt:
@@ -29,7 +30,7 @@ class Receipt:
         self.amount = amount
 
     def __str__(self):
-        return "Date: {} Category: {} Amount: {}".format(self.date, self.vendor, self.amount)
+        return f"Date: {self.date} Vendor: {self.vendor} Amount: ${self.amount}"
 
     def set_date(self, date):
         self.date = date
@@ -49,6 +50,13 @@ class Receipt:
     def get_amount(self):
         return self.amount
 
+    def to_json(self):
+        data = {"date": self.date,
+                "vendor": self.vendor,
+                "amount": self.amount}
+        json_data = json.dumps(data)
+        return json_data
+
 
 def only_images(files):
     """
@@ -64,19 +72,17 @@ def only_images(files):
     return img_files
 
 
-def extract_text():
+def console_test():
     """
-    Prints out the text of the files provided to either PyTesseract or Google Cloud Vision
-    Returns a list of long strings of receipts, not individual words
+    Run when you want to interact with the console and provide input to choose
     """
     files = []
     for img_name in img_folder:
         files.append(img_name)
     files = only_images(files)
-
     print("Here are the files available:")
     for i in range(len(files)):
-        print("({}) {}".format(i, files[i]),sep="\n")
+        print(f"({i}) {files[i]}", sep="\n")
     print()
 
     inp = input("Choose a file to extract or extract (all)\n")
@@ -84,20 +90,38 @@ def extract_text():
         inp = int(inp)
         files = [files[inp]]
 
-    # tool = input("GCV or Tess?\n")
-    # if (tool.lower() == "gcv"):
-    #     receipts = gcv.detect_text(files, path+"/images/")
-    # else:
-    receipts = tess.get_text(files)
-    if(len(receipts) == 1):
-        return receipts[0]
+    texts = extract_text(files)
+
+    receipts = []
+    for text in texts:
+        receipt = Receipt(date=get_date(text), vendor="undefined", amount=get_amount(text))
+        receipts.append(receipt)
+    for receipt in receipts:
+        print(receipt)
+
+
+def extract_text(filenames):
+    """
+    Prints out the text of the file provided to either PyTesseract or Google Cloud Vision
+    Returns a list of long strings of receipts, not individual words
+    """
+    filenames = only_images(filenames)
+    receipts = []
+    for filename in filenames:
+        extract = tess.get_text(filename)
+        # print(f"{filename} text after extract:\n{extract}")
+        receipts.append(extract)
+    print(f"receipts:\n{receipts}")
     return receipts
 
 
 def get_date(text):
     """
     Return a datetime object of the first full date in text. Return today's date on fail.
+    Ex. >>> dateparser.parse('12/12/12')
+        datetime.datetime(2012, 12, 12, 0, 0)
     """
+    print(f"text in get_date:\n{text}")
     dates = []
     language = tess.get_language(text)
     # If the text isn't in english we have to translate each word
@@ -130,17 +154,30 @@ def get_vendor(text):
 
 
 def get_amount(text):
-    pass
+    amount = tess.get_total(text)
+    return amount
+
 
 # Main
-text = extract_text()
-print(f"text in main: {text}")
-date = get_date(text)
-print("date {}".format(date))
-# vendor = get_vendor(text)
-# amount = get_amount(text)
-# receipt = Receipt(date, vendor, amount)
+def main():
+    """
+    * Read image filenames from the command line
+    * Convert images to text
+    * Build Receipt(date, vendor, amount) objects from text
+    * Return json object: {"date":YYYY-MM-DD, "vendor":vendor_name, "amount":XX.XX}
+    """
+    filenames = sys.argv[1:]
+    filenames = only_images(filenames)
+    receipts = []
+    texts = extract_text(filenames)
 
-# Next steps
-# Pass receipt var to a function that updates the database
+    for text in texts:
+        receipt = Receipt(date=get_date(text),vendor="undefined",amount=get_amount(text))
+        receipts.append(receipt)
+    for receipt in receipts:
+        print(receipt)
 
+
+main()
+# print("*"*10,"NOW SWITCHING TO CONSOLE","*"*10)
+# console_test() # Run this if you want to manually choose files
