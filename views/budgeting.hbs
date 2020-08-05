@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<budgetingHeader> 	
+	<h1> Budgeting </h1>
+</budgetingHeader>
+
+<body>
+
+	<div class="monthlyBudget">
+	</div>
+
+	<div class="monthlyPayments">
+	</div>
+
+	<div class = "montlyExpenses">
+	</div>
+
+	<div class = "transactions">
+		<h2> Recent Transactions: </h2>
+		<table> 
+			{{#each transArr as |TransactionEle| }}
+			date: {{ TransactionEle.date }}
+			vendor: {{ TransactionEle.vendor }}
+			amount: {{ TransactionEle.amount }}
+			{{/each}}
+		</table>
+	</div>
+	{{{ body }}}
+</body>
+</html>
