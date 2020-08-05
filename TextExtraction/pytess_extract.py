@@ -3,7 +3,8 @@ import pytesseract
 import os
 
 path = os.getcwd()
-img_folder = os.listdir(path+"/images")
+img_folder = os.listdir(path + "/images")
+
 
 # Single hardcoded file test
 # img = cv2.imread("images/text1.png")
@@ -24,17 +25,19 @@ def get_text(images):
 
             print(img_name, ":")
             print(img_text)
-            print("-"*20)  # Separator, delete if unnecessary
-            get_total(img_text)
-            print("-"*20)
+            split = img_text.split()
+
+            print("-" * 20)  # Separator, delete if unnecessary
+            get_total(split)
+            print("-" * 20)
+            get_company(split)
+            print("-" * 20)
         except:
             print(img_name, " image object unsupported")
     return receipts
 
 
-def get_total(img_text) -> float:
-    split = img_text.split()
-
+def get_total(split) -> float:
     # testing prints
     print("-" * 20)
     print('SPLIT HERE:')
@@ -59,4 +62,34 @@ def get_total(img_text) -> float:
     return -1
 
 
-print(os.listdir(os.getcwd()+"/images"))
+def get_company(split) -> str:
+    # we identify a company name by checking from the top
+    # for letters until we read in a character that is not a letter
+    company = []
+    # we keep a boolean to see if we've already started
+    # seeing the company name
+    hit = False
+    for item in split:
+        item = item.replace(':', '')
+        # if we haven't seen the company name yet
+        # and we hit an alpha char
+        # then add it to the company name
+        if not hit:
+            if item.isalpha():
+                hit = True
+                company.append(item)
+        # if we have already started building the company name
+        # then check if this item is non alpha
+        # if it isn't, then we break
+        # otherwise, we add it to the company name
+        else:
+            if not item.isalpha():
+                break
+            else:
+                company.append(item)
+    company = " ".join(company)
+    print(f'company: {company}')
+    return company
+
+
+print(os.listdir(os.getcwd() + "/images"))
