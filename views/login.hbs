@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<loginHeader> 
+	<h1>  Welcome to Citi Accrue! </h1>
+	<a> Please login to get started </a>
+</loginHeader>
+
+<body>
+	<div class="loginForm">
+	<form method = "GET" action = "/">
+		<label for = "username"> Username: </label>
+		<input type = "text" id="userName" name="userName">
+		
+		<label for = "password"> Password: </label>
+		<input type = "text" id="password" name="password">
+
+		<input type="submit" value = "Log In">
+
+		<div class = "loginError">
+			{{#if errorMessage}}
+			<a> {{errorMessage}} </a>
+			{{/if}}
+		</div>
+
+		<div class = "options">
+			<a1> Forgot User Id </a1>
+			<a2> Forgot Password </a2>
+		</div>
+
+		<div class = "register">
+			<a> Register </a>
+		</div>
+
+	</div>
+	{{{ body }}}
+</body>
+</html>
