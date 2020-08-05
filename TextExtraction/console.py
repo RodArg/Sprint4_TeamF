@@ -18,14 +18,9 @@ import dateparser as dp
 from dateparser.search import search_dates
 
 
-path = os.getcwd()
-# img_folder = os.listdir(path+"/TextExtraction/images") # Use this line when executing outside TextExtraction
-img_folder = os.listdir(path+"/images") # Use this line when running from IDE
-
-
 class Receipt:
-    def __init__(self, date="00-00-0000", vendor="undefined", amount=0):
-        self.date = str(date)
+    def __init__(self, date=datetime.datetime(1,1,1), vendor="undefined", amount=0):
+        self.date = date
         self.vendor = vendor
         self.amount = amount
 
@@ -33,7 +28,7 @@ class Receipt:
         return f"Date: {self.date} Vendor: {self.vendor} Amount: ${self.amount}"
 
     def set_date(self, date):
-        self.date = str(date)
+        self.date = date
 
     def set_vendor(self, vendor):
         self.vendor = vendor
@@ -51,7 +46,7 @@ class Receipt:
         return self.amount
 
     def to_json(self):
-        data = {"date": self.date,
+        data = {"date": self.date.strftime("%Y-%M-%D"), # self.date is a datetime.datetime obj, we want to pass a string
                 "vendor": self.vendor,
                 "amount": self.amount}
         json_data = json.dumps(data)
@@ -141,7 +136,7 @@ def get_date(text):
         for date in dates:
             # print(f"date: {date}")
             date_parsed = dp.parse(date[0], settings={'STRICT_PARSING': True, 'REQUIRE_PARTS': ['day', 'month', 'year'], 'PREFER_DATES_FROM': 'past', 'locale': 'de-AT'})
-            # print(f"dateparsed: {date_parsed}")
+            print(f"dateparsed: {date_parsed} type: {type(date_parsed)}")
             if(date_parsed != None and date[1].year > 2000 and date[1].year <= datetime.date.today().year):
                 return date_parsed
     except:
@@ -176,7 +171,9 @@ def main():
         receipts.append(receipt)
     for receipt in receipts:
         print(receipt)
-
+    # temp while I figure out whether we want to pass multiple jsons, for now only passes first json
+    print(receipts[0].to_json()) # just testing out the format
+    return receipts[0].to_json()
 
 main()
 # print("*"*10,"NOW SWITCHING TO CONSOLE","*"*10)
