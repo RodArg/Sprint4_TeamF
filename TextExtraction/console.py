@@ -24,8 +24,8 @@ img_folder = os.listdir(path+"/images") # Use this line when running from IDE
 
 
 class Receipt:
-    def __init__(self, date="DD/MM/YYYY", vendor="undefined", amount=0):
-        self.date = date
+    def __init__(self, date="00-00-0000", vendor="undefined", amount=0):
+        self.date = str(date)
         self.vendor = vendor
         self.amount = amount
 
@@ -33,7 +33,7 @@ class Receipt:
         return f"Date: {self.date} Vendor: {self.vendor} Amount: ${self.amount}"
 
     def set_date(self, date):
-        self.date = date
+        self.date = str(date)
 
     def set_vendor(self, vendor):
         self.vendor = vendor
