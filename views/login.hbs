@@ -1,35 +1,34 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 
-<loginHeader> 
-	<h1>  Welcome to Citi Accrue! </h1>
-	<a> Please login to get started </a>
+<loginHeader>
+	<h1 style="text-align:center">  Citi Budgie </h1>
 </loginHeader>
 
 <body>
 	<div class="loginForm">
+        <h1> Welcome Back </h1>
 	<form method = "GET" action = "/">
-		<label for = "username"> Username: </label>
-		<input type = "text" id="userName" name="userName">
-		
-		<label for = "password"> Password: </label>
-		<input type = "text" id="password" name="password">
+		<label for = "username"><i class="fas fa-user"></i></label>
+		<input type="text" name="userName" placeholder="Username" id="userName" required>
+		<label for = "password"><i class="fas fa-lock"></i></label>
+		<input type="password" name="password" placeholder="Password" id="password" required>
 
 		<input type="submit" value = "Log In">
 
-		<div class = "loginError">
-			{{#if errorMessage}}
-			<a> {{errorMessage}} </a>
-			{{/if}}
-		</div>
+<!--		<div class = "loginError">-->
+<!--			{{#if errorMessage}}-->
+<!--			<a> {{errorMessage}} </a>-->
+<!--			{{/if}}-->
+<!--		</div>-->
 
 		<div class = "options">
-			<a1> Forgot User Id </a1>
-			<a2> Forgot Password </a2>
-		</div>
-
-		<div class = "register">
-			<a> Register </a>
-		</div>
+			<a1 href=""> Forgot Username</a1>
+			<a2 href=""> Forgot Password </a2>
+        </div>
+        <div class="links">
+            <a href="">Register</a>
+        </div>
 
 	</div>
 	{{{ body }}}

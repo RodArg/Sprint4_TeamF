@@ -1,18 +1,111 @@
 .sidenav {
-  height: 100%;
-  width: 250px;
+  width: 150px;
+  height: 65%;
   position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: blue;
-  color: white;
+  top: 20px;
+  left: 10px;
+  background: #eee;
+  padding: 8px 0;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #2196F3;
   display: block;
 }
 
+.sidenav a:hover {
+  color: #064579;
+}
 
 .logo {
-  position: absolute;
-  padding-top: 600px;
-  left:85px;
+    padding-left: 15px;
+    padding-top: 40px;
+    height: 40px;
+}
+
+.loginForm .links{
+  	display: flex;
+  	padding: 0 15px;
+}
+.loginForm .links a, .loginForm .options a1, .loginForm .options a2{
+  	color: #adb2ba;
+  	text-decoration: none;
+  	display: inline-flex;
+  	padding: 10px 10px 10px 10px;
+  	font-weight: bold;
+}
+.loginForm .links a:hover, .loginForm .options a1:hover, .loginForm .options a2:hover {
+  	color: #9da3ac;
+}
+
+.loginForm{
+  	width: 400px;
+  	background-color: #ffffff;
+  	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
+  	margin: 100px auto;
+}
+.loginForm form{
+  	display: flex;
+  	flex-wrap: wrap;
+  	justify-content: center;
+  	padding-top: 20px;
+}
+
+.loginForm h1 {
+  	text-align: center;
+  	color: #5b6574;
+  	font-size: 24px;
+  	padding: 20px 0 20px 0;
+  	border-bottom: 1px solid #dee0e4;
+}
+.loginForm form label{
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	width: 50px;
+  	height: 50px;
+  	background-color: #3274d6;
+  	color: #ffffff;
+}
+
+.loginForm form input[type="password"], .loginForm form input[type="text"]{
+    width: 280px;
+  	height: 50px;
+  	border: 1px solid #dee0e4;
+  	margin-bottom: 20px;
+  	padding: 0 15px;
+}
+
+.loginForm form input[type="submit"]{
+  	width: 60%;
+  	padding: 15px;
+  	margin-top: 20px;
+  	background-color: #3274d6;
+  	border: 0;
+  	cursor: pointer;
+  	font-weight: bold;
+  	color: #ffffff;
+  	transition: background-color 0.2s;
+  	border-radius: 25px;
+}
+.loginForm form input[type="submit"]:hover {
+  	background-color: #2868c7;
+  	transition: background-color 0.2s;
+}
+
+.options a1 {
+    padding-top: 20px;
+    padding-left: 5px;
+}
+
+.options a2 {
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.register a1{
+    padding-left: 40px;
 }
