@@ -3,7 +3,7 @@ import pytesseract
 import os
 
 path = os.getcwd()
-img_folder = os.listdir(path+"/images")
+img_folder = os.listdir(path+"/TextExtraction/images")
 
 # Single hardcoded file test
 # img = cv2.imread("images/text1.png")
@@ -59,4 +59,4 @@ def get_total(img_text) -> float:
     return -1
 
 
-print(os.listdir(os.getcwd()+"/images"))
+#print(os.listdir(os.getcwd()+"/images"))

@@ -1,10 +1,19 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+let {PythonShell} = require('python-shell');
 
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, '/public')));
-app.use(express.urlencoded({ extended: false })); 
+app.use(express.urlencoded({ extended: false }));
+
+
+
+
+PythonShell.run('TextExtraction/pytess_extract.py', null, function (err, results) {
+  if (err) throw err;
+  console.log('results: %j', results);
+});
 
 //temp hardcoding transaction data
 class transaction {
@@ -32,16 +41,11 @@ app.get('/', function(req, res) { //for a fake auth
 });
 
 app.get('/budgeting', function(req,res) {
-  res.render('budgeting', {transactionData: transArr}); 
-});  
+  res.render('budgeting', {transactionData: transArr});
+});
 
 app.post('/budgeting', function(req,res) {
-  res.render('budgeting', {transactionData: transArr}); 
+  res.render('budgeting', {transactionData: transArr});
 }); //handle form submission data here
 
 app.listen(3000);
-
-
-
-
-
