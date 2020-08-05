@@ -1,11 +1,59 @@
 const express = require('express');
-
 const path = require('path');
 const app = express();
+
+let {PythonShell} = require('python-shell')
+let pyshell = new PythonShell('my_script.py');
 
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: false })); 
+
+
+
+
+
+
+
+/*
+let options = {
+  mode: 'text',
+  pythonPath: 'path/to/python', //change path
+  pythonOptions: ['-u'], // get print results in real-time
+  scriptPath: 'path/to/my/scripts', //change path
+  args: ['value1', 'value2', 'value3'] //change args
+};
+
+PythonShell.run('my_script.py', options, function (err, results) {
+  if (err) throw err;
+  // results is an array consisting of messages collected during execution
+  console.log('results: %j', results);
+});
+*/
+// sends a message to the Python script via stdin
+pyshell.send('hello');
+
+pyshell.on('message', function (message) {
+  // received a message sent from the Python script (a simple "print" statement)
+  console.log(message);
+});
+
+// end the input stream and allow the process to exit
+pyshell.end(function (err,code,signal) {
+  if (err) throw err;
+  console.log('The exit code was: ' + code);
+  console.log('The exit signal was: ' + signal);
+  console.log('finished');
+});
+
+
+
+
+
+
+
+
+
 
 //temp hardcoding transaction data
 class transaction {

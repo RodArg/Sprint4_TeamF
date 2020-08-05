@@ -2,6 +2,7 @@ import os
 import pytess_extract as tess
 import gcv_extract as gcv
 import dateparser as dp
+from dateparser.search import search_dates
 import datetime
 
 path = os.getcwd()
@@ -93,7 +94,22 @@ def extract_text():
 
 
 def get_date(text):
-    pass
+    """
+    Return a datetime object of the first date in text
+    """
+    dates = search_dates(text)
+    print("dates {}".format(dates))
+    try:
+        for date in dates:
+            date_parsed = dp.parse(date[0], settings={'STRICT_PARSING': True, 'REQUIRE_PARTS': ['day', 'month', 'year'], 'PREFER_DATES_FROM': 'past'})
+            # print("date_parsed: {}".format(date_parsed))
+            # print("date.year: {}".format(date[1].year))
+            # print("today.year: {}".format(datetime.date.today().year))
+            if(date_parsed != None and date[1].year > 2000 and date[1].year <= datetime.date.today().year):
+                return date_parsed
+    except:
+        print("We didn't catch the right date")
+    return -1
 
 
 def get_category(text):
@@ -105,10 +121,13 @@ def get_amount(text):
 
 # Main
 text = extract_text()
-date = get_date(text)
-category = get_category(text)
-amount = get_amount(text)
-receipt = Receipt(date, category, amount)
+date = get_date(text[0])
+if(date == -1):
+    date = datetime.date.today()
+print("date {}".format(date))
+# category = get_category(text)
+# amount = get_amount(text)
+# receipt = Receipt(date, category, amount)
 
 # Next steps
 # Pass receipt var to a function that updates the database
