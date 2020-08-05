@@ -4,12 +4,22 @@ import os
 from statistics import mode
 from googletrans import Translator
 
-path = os.getcwd()
-# img_folder = os.listdir(path+"/TextExtraction/images") # Use this line when executing outside TextExtraction
-
-img_folder = os.listdir(path+"/images") # Use this line when running from IDE
-
 translator = Translator()
+
+
+def set_path():
+    """
+    Detect and set proper path based on current directory
+    """
+    path = os.getcwd()
+    print(f"path:{path[-14:]}")
+    if (path[-14:] == "TextExtraction"):
+        return os.listdir(path + "/images")  # When inside the IDE
+    return os.listdir(path + "/TextExtraction/images")  # When inside the command line
+
+
+path = set_path()
+
 
 def get_language(text):
     """
