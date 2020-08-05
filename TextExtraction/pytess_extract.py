@@ -61,9 +61,8 @@ def get_total(split) -> float:
     return -1
 
 
-<<<<<<< HEAD
 #print(os.listdir(os.getcwd()+"/images"))
-=======
+
 def get_company(split) -> str:
     # we identify a company name by checking from the top
     # for letters until we read in a character that is not a letter
@@ -94,5 +93,4 @@ def get_company(split) -> str:
     return company
 
 
-print(os.listdir(os.getcwd() + "/images"))
->>>>>>> 326f0af7910dc079e33fe14f3be4deed5eb774ac
+print(os.listdir(os.getcwd() + "/TextExtraction/images"))
