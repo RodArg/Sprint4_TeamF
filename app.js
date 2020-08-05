@@ -1,25 +1,52 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+
 let {PythonShell} = require('python-shell');
+let pyshell = new PythonShell('TextExtraction/console.py');
 
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: false }));
 
+let options = {
+  mode: 'text',
+  pythonPath: 'TextExtraction/pytess_extract.py', //isn't this repetitive? I don't fully understand the options
+  pythonOptions: ['-u'], // get print results in real-time
+  scriptPath: 'path/to/my/scripts', //I think we can skip this because we're only using one JS script?
+  args: ['value1', 'value2', 'value3'] //arguments to pass to the script
+};
 
-
-
-PythonShell.run('TextExtraction/pytess_extract.py', null, function (err, results) {
-  if (err) throw err;
-  console.log('results: %j', results);
+//why is pytess_extract used instead of console?
+PythonShell.run('TextExtraction/console.py', options, function (err, results) {
+	if (err) throw err;
+	console.log('results: %j', results);
 });
+
+/*
+
+// sends a message to the Python script via stdin
+pyshell.send('hello');
+
+pyshell.on('message', function (message) {
+  // received a message sent from the Python script (a simple "print" statement)
+  console.log(message);
+});
+
+// end the input stream and allow the process to exit
+pyshell.end(function (err,code,signal) {
+  if (err) throw err;
+  console.log('The exit code was: ' + code);
+  console.log('The exit signal was: ' + signal);
+  console.log('finished');
+});
+*/
 
 //temp hardcoding transaction data
 class transaction {
-	constructor(date, vendor, amount) {
+	constructor(date, company, amount) {
 		this.date = date;
-		this.vendor = vendor;
+		this.company = company;
 		this.amount = amount;
 	}
 }
@@ -37,15 +64,16 @@ app.get('/', function(req, res) { //for a fake auth
 	else {
 		res.render('login', {errorMessage: "Incorrect login. Try again."});
 	}
-    res.render('login');
 });
 
 app.get('/budgeting', function(req,res) {
-  res.render('budgeting', {transactionData: transArr});
-});
+	res.render('budgeting', {transactionData: transArr}); 
+});  
 
 app.post('/budgeting', function(req,res) {
-  res.render('budgeting', {transactionData: transArr});
+	res.render('budgeting', {transactionData: transArr}); 
 }); //handle form submission data here
 
 app.listen(3000);
+
+

@@ -97,3 +97,32 @@ def get_total(img_text) -> float:
             print(f'total: {total}')
             return total
     return -1
+
+def get_company(split) -> str:
+    # we identify a company name by checking from the top
+    # for letters until we read in a character that is not a letter
+    company = []
+    # we keep a boolean to see if we've already started
+    # seeing the company name
+    hit = False
+    for item in split:
+        item = item.replace(':', '')
+        # if we haven't seen the company name yet
+        # and we hit an alpha char
+        # then add it to the company name
+        if not hit:
+            if item.isalpha():
+                hit = True
+                company.append(item)
+        # if we have already started building the company name
+        # then check if this item is non alpha
+        # if it isn't, then we break
+        # otherwise, we add it to the company name
+        else:
+            if not item.isalpha():
+                break
+            else:
+                company.append(item)
+    company = " ".join(company)
+    print(f'company: {company}')
+    return company
