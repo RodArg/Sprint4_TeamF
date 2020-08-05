@@ -2,34 +2,29 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-let {PythonShell} = require('python-shell')
-let pyshell = new PythonShell('my_script.py');
+let {PythonShell} = require('python-shell');
+let pyshell = new PythonShell('TextExtraction/console.py');
 
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, '/public')));
-app.use(express.urlencoded({ extended: false })); 
+app.use(express.urlencoded({ extended: false }));
 
-
-
-
-
-
-
-/*
 let options = {
   mode: 'text',
-  pythonPath: 'path/to/python', //change path
+  pythonPath: 'TextExtraction/pytess_extract.py', //isn't this repetitive? I don't fully understand the options
   pythonOptions: ['-u'], // get print results in real-time
-  scriptPath: 'path/to/my/scripts', //change path
-  args: ['value1', 'value2', 'value3'] //change args
+  scriptPath: 'path/to/my/scripts', //I think we can skip this because we're only using one JS script?
+  args: ['value1', 'value2', 'value3'] //arguments to pass to the script
 };
 
-PythonShell.run('my_script.py', options, function (err, results) {
-  if (err) throw err;
-  // results is an array consisting of messages collected during execution
-  console.log('results: %j', results);
+//why is pytess_extract used instead of console?
+PythonShell.run('TextExtraction/console.py', options, function (err, results) {
+	if (err) throw err;
+	console.log('results: %j', results);
 });
-*/
+
+/*
+
 // sends a message to the Python script via stdin
 pyshell.send('hello');
 
@@ -45,15 +40,7 @@ pyshell.end(function (err,code,signal) {
   console.log('The exit signal was: ' + signal);
   console.log('finished');
 });
-
-
-
-
-
-
-
-
-
+*/
 
 //temp hardcoding transaction data
 class transaction {
@@ -88,9 +75,5 @@ app.post('/budgeting', function(req,res) {
 }); //handle form submission data here
 
 app.listen(3000);
-
-
-
-
 
 

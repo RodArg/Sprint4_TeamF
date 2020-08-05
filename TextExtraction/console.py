@@ -1,12 +1,12 @@
 import os
 import pytess_extract as tess
-import gcv_extract as gcv
+#import gcv_extract as gcv
 import dateparser as dp
 from dateparser.search import search_dates
 import datetime
 
 path = os.getcwd()
-img_folder = os.listdir(path+"/images")
+img_folder = os.listdir(path+"/TextExtraction/images")
 
 ## TODO:
 # Extract the date
@@ -131,4 +131,3 @@ print("date {}".format(date))
 
 # Next steps
 # Pass receipt var to a function that updates the database
-

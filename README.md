@@ -15,6 +15,13 @@ A repository where Team F will be assembling their web application solution for 
         * Follow [this guide](http://macappstore.org/tesseract/)
     * Windows:
         * Follow [this guide](https://towardsdatascience.com/read-text-from-image-with-one-line-of-python-code-c22ede074cac)
+
+3. App.js
+   * `npm install express`
+   * `npm install handlebars`
+      * `or yarn add handlebars`
+
+
         
 ## Notes
 * GCV currently requires locally stored credentials
