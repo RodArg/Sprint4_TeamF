@@ -1,6 +1,5 @@
 const express = require('express');
 
-const express = require('express');
 const path = require('path');
 const app = express();
 
@@ -10,9 +9,9 @@ app.use(express.urlencoded({ extended: false }));
 
 //temp hardcoding transaction data
 class transaction {
-	constructor(date, vendor, amount) {
+	constructor(date, company, amount) {
 		this.date = date;
-		this.vendor = vendor;
+		this.company = company;
 		this.amount = amount;
 	}
 }
@@ -30,18 +29,18 @@ app.get('/', function(req, res) { //for a fake auth
 	else {
 		res.render('login', {errorMessage: "Incorrect login. Try again."});
 	}
-    res.render('login');
 });
 
 app.get('/budgeting', function(req,res) {
-  res.render('budgeting', {transactionData: transArr}); 
+	res.render('budgeting', {transactionData: transArr}); 
 });  
 
 app.post('/budgeting', function(req,res) {
-  res.render('budgeting', {transactionData: transArr}); 
+	res.render('budgeting', {transactionData: transArr}); 
 }); //handle form submission data here
 
 app.listen(3000);
+
 
 
 
