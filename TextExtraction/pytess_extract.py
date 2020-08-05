@@ -44,7 +44,7 @@ def get_total(img_text) -> float:
     for item in reversed(split):
         # we identify the total amount by checking for
         # a $ and a decimal number
-        if '.' in item and '$' in item:
+        if '.' in item:
             print(f'found item: {item}')
             # get rid of all characters that are not a number or '.'
             # then return the cleaned total
