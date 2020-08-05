@@ -1,42 +1,41 @@
-import os
-import pytess_extract as tess
-#import gcv_extract as gcv
-import dateparser as dp
-from dateparser.search import search_dates
-import datetime
-
-path = os.getcwd()
-img_folder = os.listdir(path+"/TextExtraction/images")
-
+"""
 ## TODO:
 # Extract the date
-    # Try importing dateparser or datefinder
-        # Explore statements that find common formats (YYYY/MM/DD, YY-MM-DD, DD Month YY, etc)
-    # https://github.com/scrapinghub/dateparser
-    # https://github.com/akoumjian/datefinder
-# Extract the category
+    # Done
+# Extract the vendor
     # Company title
-    # We have to figure out how to isolate the category
+    # We have to figure out how to isolate the vendor
 # Extract the payment
-    # Usually listed next to "Total"
-    # Select a list of words we can parse for (e.g. Total, Subtotal, Check Amount)
-    #   and get the first number with a decimal after that word
+    # Done
+"""
+import os
+import datetime
+import sys
+import pytess_extract as tess
+# import gcv_extract as gcv
+import dateparser as dp
+from dateparser.search import search_dates
+
+
+path = os.getcwd()
+img_folder = os.listdir(path+"/TextExtraction/images") # Use this line when executing outside TextExtraction
+# img_folder = os.listdir(path+"/images") # Use this line when running from IDE
 
 
 class Receipt:
-    def __init__(self, date="DD/MM/YYYY", category="undefined", amount=0):
+    def __init__(self, date="DD/MM/YYYY", vendor="undefined", amount=0):
         self.date = date
-        self.category = category
+        self.vendor = vendor
         self.amount = amount
 
     def __str__(self):
-        return "Date: {} Category: {} Amount: {}".format(self.date, self.category, self.amount)
+        return "Date: {} Category: {} Amount: {}".format(self.date, self.vendor, self.amount)
 
     def set_date(self, date):
         self.date = date
 
-    def set_category(self, category):
-        self.category = category
+    def set_vendor(self, vendor):
+        self.vendor = vendor
 
     def set_amount(self, amount):
         self.amount = amount
@@ -44,8 +43,8 @@ class Receipt:
     def get_date(self):
         return self.date
 
-    def get_category(self):
-        return self.category
+    def get_vendor(self):
+        return self.vendor
 
     def get_amount(self):
         return self.amount
@@ -85,34 +84,48 @@ def extract_text():
         inp = int(inp)
         files = [files[inp]]
 
-    tool = input("GCV or Tess?\n")
-    if (tool.lower() == "gcv"):
-        receipts = gcv.detect_text(files, path+"/images/")
-    else:
-        receipts = tess.get_text(files)
+    # tool = input("GCV or Tess?\n")
+    # if (tool.lower() == "gcv"):
+    #     receipts = gcv.detect_text(files, path+"/images/")
+    # else:
+    receipts = tess.get_text(files)
+    if(len(receipts) == 1):
+        return receipts[0]
     return receipts
 
 
 def get_date(text):
     """
-    Return a datetime object of the first date in text
+    Return a datetime object of the first full date in text. Return today's date on fail.
     """
-    dates = search_dates(text)
-    print("dates {}".format(dates))
+    dates = []
+    language = tess.get_language(text)
+    # If the text isn't in english we have to translate each word
+    # because translating the text as a whole changes the date format
+    if(language != "en"):
+        text = tess.translate_words(text, language)
+        for word in text:
+            date = search_dates(word)
+            # date format: [('string', datetimeformat)]
+            # we want the string hence [0][0]
+            # and the string should be at least 'yymmdd' len (6) long
+            if(date is not None and len(date[0][0]) >= 6):
+                dates.append(date[0])
+    else:
+        dates = search_dates(text)
     try:
         for date in dates:
-            date_parsed = dp.parse(date[0], settings={'STRICT_PARSING': True, 'REQUIRE_PARTS': ['day', 'month', 'year'], 'PREFER_DATES_FROM': 'past'})
-            # print("date_parsed: {}".format(date_parsed))
-            # print("date.year: {}".format(date[1].year))
-            # print("today.year: {}".format(datetime.date.today().year))
+            # print(f"date: {date}")
+            date_parsed = dp.parse(date[0], settings={'STRICT_PARSING': True, 'REQUIRE_PARTS': ['day', 'month', 'year'], 'PREFER_DATES_FROM': 'past', 'locale': 'de-AT'})
+            # print(f"dateparsed: {date_parsed}")
             if(date_parsed != None and date[1].year > 2000 and date[1].year <= datetime.date.today().year):
                 return date_parsed
     except:
         print("We didn't catch the right date")
-    return -1
+    return datetime.date.today()
 
 
-def get_category(text):
+def get_vendor(text):
     pass
 
 
@@ -121,13 +134,13 @@ def get_amount(text):
 
 # Main
 text = extract_text()
-date = get_date(text[0])
-if(date == -1):
-    date = datetime.date.today()
+print(f"text in main: {text}")
+date = get_date(text)
 print("date {}".format(date))
-# category = get_category(text)
+# vendor = get_vendor(text)
 # amount = get_amount(text)
-# receipt = Receipt(date, category, amount)
+# receipt = Receipt(date, vendor, amount)
 
 # Next steps
 # Pass receipt var to a function that updates the database
+
