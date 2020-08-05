@@ -1,0 +1,14 @@
+#
+####### requirements.txt #######
+#
+###### Requirements without Version Specifiers ######
+opencv-python
+pytesseract
+#
+###### Requirements with Version Specifiers ######
+#   See https://www.python.org/dev/peps/pep-0440/#version-specifiers
+    # None ATM
+#
+###### Refer to other requirements files ######
+    # None ATM
+#

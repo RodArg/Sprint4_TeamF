@@ -1,3 +1,4 @@
+const express = require('express');
 
 const express = require('express');
 const path = require('path');
@@ -33,11 +34,11 @@ app.get('/', function(req, res) { //for a fake auth
 });
 
 app.get('/budgeting', function(req,res) {
-  res.render('budgeting', {transactionData: transArr}); //pass transaction form as an argument here
+  res.render('budgeting', {transactionData: transArr}); 
 });  
 
 app.post('/budgeting', function(req,res) {
-  res.render('budgeting', {transactionData: transArr}); //pass transaction form as an argument here
+  res.render('budgeting', {transactionData: transArr}); 
 }); //handle form submission data here
 
 app.listen(3000);
