@@ -15,8 +15,11 @@ def get_language(text):
     Input: A single string of text in an identifiable language
     Output: a two-char string language identifier (en = english, de = deutsch, etc.)
     """
+    # print(f"text in get_language:\n{text}")
     text = text.split()
+    # print(f"text after split:\n{text}")
     text.reverse()
+    # print(f"text after reverse:\n{text}")
     languages = translator.detect(text[:len(text) // 4])  # Parsing the whole text is slow so we only look at 1/4th
 
     for i in range(len(languages)):
@@ -46,29 +49,27 @@ def translate_words(text, language=""):
     return translated_text
 
 
-def get_text(images):
+def get_text(img_name):
     """
-    Input: A list of filenames of images to be converted to text
+    Input: The name of the image to be converted to text
     Output: A list of strings of images converted to text
     """
-    receipts = []
-    for img_name in images:
-        print("Looking at:", img_name)
-        try:
-            img_path = "images/" + img_name
-            img = cv2.imread(img_path)
-            img_text = pytesseract.image_to_string(img)
+    print("Looking at:", img_name)
+    try:
+        img_path = "images/" + img_name
+        img = cv2.imread(img_path)
+        img_text = pytesseract.image_to_string(img)
 
-            receipts.append(img_text)
 
-            print(img_name, ":")
-            print(img_text)
-            print("-"*20)  # Separator, delete if unnecessary
-            get_total(img_text)
-            print("-"*20)
-        except:
-            print(img_name, " image object unsupported")
-    return receipts
+        print(f"file {img_name} text in get_text:\n{img_text}")
+        print("-" * 20)  # Separator, delete if unnecessary
+        # get_total(img_text)
+        print("-" * 20)
+        print(f"file {img_name} text right before returning:\n{img_text}")
+        return img_text
+    except:
+        print(img_name, " image object unsupported")
+
 
 
 def get_total(img_text) -> float:
