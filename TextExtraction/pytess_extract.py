@@ -5,8 +5,9 @@ from statistics import mode
 from googletrans import Translator
 
 path = os.getcwd()
-img_folder = os.listdir(path+"/TextExtraction/images") # Use this line when executing outside TextExtraction
-# img_folder = os.listdir(path+"/images") # Use this line when running from IDE
+# img_folder = os.listdir(path+"/TextExtraction/images") # Use this line when executing outside TextExtraction
+
+img_folder = os.listdir(path+"/images") # Use this line when running from IDE
 
 translator = Translator()
 
