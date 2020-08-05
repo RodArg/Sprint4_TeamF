@@ -42,8 +42,7 @@ def get_total(img_text) -> float:
     print("-" * 20)
 
     for item in reversed(split):
-        # we identify the total amount by checking for
-        # a $ and a decimal number
+        # we identify the total amount by checking for the last '.' token
         if '.' in item:
             print(f'found item: {item}')
             # get rid of all characters that are not a number or '.'
@@ -51,7 +50,7 @@ def get_total(img_text) -> float:
             total = ''
             for c in item:
                 print(f'--- loop: {c}')
-                if c == '.' or (ord(c) > 47 and ord(c) < 58):
+                if c == '.' or (47 < ord(c) < 58):
                     print(f'--- loop: add {c}')
                     total += c
             total = round(float(total), 2)
