@@ -46,7 +46,7 @@ class Receipt:
         return self.amount
 
     def to_json(self):
-        data = {"date": self.date.strftime("%Y-%M-%D"), # self.date is a datetime.datetime obj, we want to pass a string
+        data = {"date": self.date.strftime("%Y-%m-%d"), # pass YYYY-MM-DD string
                 "vendor": self.vendor,
                 "amount": self.amount}
         json_data = json.dumps(data)
@@ -174,8 +174,8 @@ def main():
         receipts.append(receipt)
     for receipt in receipts:
         print(receipt)
-    # temp while I figure out whether we want to pass multiple jsons, for now only passes first json
-    print(receipts[0].to_json()) # just testing out the format
+    # temp single return while I figure out whether we want to pass multiple jsons, for now only passes first json
+    print("json:",receipts[0].to_json()) # just testing out the format
     return receipts[0].to_json()
 
 main()
