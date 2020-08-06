@@ -28,9 +28,9 @@ pyshell.end(function (err,code,signal) {
 
 //temp hardcoding transaction data
 class transaction {
-	constructor(date, company, amount) {
+	constructor(date, vendor, amount) {
 		this.date = date;
-		this.company = company;
+		this.vendor = vendor;
 		this.amount = amount;
 	}
 }
@@ -69,10 +69,11 @@ app.post('/budgeting', function(req,res) {
 				if (err) throw err;
 				resultsJSON = results;
 				console.log('results: %j', results);
+				const newTrans = new transaction(new Date(results.date), results.vendor, results.amount);
+				transArr.push(newTrans);
 		});
-		const newTrans = new transaction(results.date, results.vendor, results.amount);
-		transArr.push(newTrans);
 	}
+	console.log("transArr: ", transArr);
 	res.render('budgeting', {transactionData: transArr}); 
 }); 
 
