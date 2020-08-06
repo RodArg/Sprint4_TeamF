@@ -76,10 +76,10 @@ def console_test():
     for img_name in img_folder:
         files.append(img_name)
     files = only_images(files)
-    print("Here are the files available:")
-    for i in range(len(files)):
-        print(f"({i}) {files[i]}", sep="\n")
-    print()
+    #print("Here are the files available:")
+    #for i in range(len(files)):
+    #    print(f"({i}) {files[i]}", sep="\n")
+    #print()
 
     inp = input("Choose a file to extract or extract (all)\n")
     if (inp.lower() != "all"):
@@ -92,8 +92,8 @@ def console_test():
     for text in texts:
         receipt = Receipt(date=get_date(text), vendor="undefined", amount=get_amount(text))
         receipts.append(receipt)
-    for receipt in receipts:
-        print(receipt)
+    #for receipt in receipts:
+        #print(receipt)
 
 
 def extract_text(filenames):
@@ -175,18 +175,22 @@ def main():
     """
     filenames = sys.argv[1:]
     filenames = only_images(filenames)
-    print("filenames:", filenames)
+    #print("filenames:", filenames)
     receipts = []
     texts = extract_text(filenames)
-    print("texts:", texts)
+    #print("texts:", texts)
     for text in texts:
         receipt = Receipt(date=get_date(text),vendor=get_vendor(text),amount=get_amount(text))
         receipts.append(receipt)
         print(f"get_vendor: {get_vendor(text)} get_company: {tess.get_company(text.split())}")
+    #for receipt in receipts:
+    #    print(receipt)
+    # temp while I figure out whether we want to pass multiple jsons, for now only passes first json
+    print("json:",receipts[0].to_json()) # just testing out the format
     for receipt in receipts:
         print(receipt)
     # temp single return while I figure out whether we want to pass multiple jsons, for now only passes first json
-    print("json:",receipts[0].to_json()) # just testing out the format
+    print(receipts[0].to_json()) # just testing out the format
     return receipts[0].to_json()
 
 main()

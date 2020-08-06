@@ -3,28 +3,10 @@ const path = require('path');
 const app = express();
 
 let {PythonShell} = require('python-shell');
-//let pyshell = new PythonShell('TextExtraction/console.py');
 
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: false }));
-
-/*
-
-
-pyshell.on('message', function (message) {
-  // received a message sent from the Python script (a simple "print" statement)
-  console.log(message);
-});
-
-// end the input stream and allow the process to exit
-pyshell.end(function (err,code,signal) {
-  if (err) throw err;
-  console.log('The exit code was: ' + code);
-  console.log('The exit signal was: ' + signal);
-  console.log('finished');
-});
-*/
 
 //temp hardcoding transaction data
 class transaction {
@@ -33,6 +15,7 @@ class transaction {
 		this.vendor = vendor;
 		this.amount = amount;
 	}
+
 }
 
 const transArr = [];
@@ -57,24 +40,27 @@ app.get('/budgeting', function(req,res) {
 app.post('/budgeting', function(req,res) {
 	if(req.body.length != 0) {
 		let fileNamePy = req.body.fileName;
-		let resultsJSON;
+
 		PythonShell.run('TextExtraction/console.py', 
 			{mode: 'text', args: [fileNamePy]}, 
 			function (err, results) {
-				//test
+
 				if(results === undefined) {
-					console.log('undefined results');
+					console.log('undefined results'); //test
 				}
-				//
+
+				let json = JSON.parse(results.slice(-1)[0]);
+
 				if (err) throw err;
-				resultsJSON = results;
-				console.log('results: %j', results);
-				const newTrans = new transaction(new Date(results.date), results.vendor, results.amount);
-				transArr.push(newTrans);
+
+				const newTrans = new transaction(new Date(json.date), json.vendor, parseFloat(json.amount)); //not working
+				//console.log(newTrans);
+				transArr.push(newTrans); 
+				console.log(transArr); //test
 		});
+
+		//for display: make a chart, get each date year, month, day for one col, vendor for second col, amount col
 	}
-	console.log("transArr: ", transArr);
-	res.render('budgeting', {transactionData: transArr}); 
 }); 
 
 app.listen(3000);
