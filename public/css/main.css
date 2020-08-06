@@ -203,7 +203,7 @@ body {
 .paleBlueRows tr td {
   border-bottom: 0;
   border-top: 0;
-  padding-left: 50px;
+  padding-left: 20px;
 }
 
 .paleBlueRows tr td:last-child {
