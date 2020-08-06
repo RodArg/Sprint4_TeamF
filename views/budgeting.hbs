@@ -44,41 +44,13 @@
             <td>Date</td>
             <td>Company</td>
         </tr>
+        {{#each transactionData as |TransactionEle| }}
         <tr>
-            <td style="color:#FF8D8D">- $8.56</td>
-            <td>08/15/2020</td>
-            <td>DoorDash Inc.</td>
+            <td style="color:#FF8D8D"> -{{ TransactionEle.amount }} </td>
+            <td>{{ TransactionEle.date }}</td>
+            <td>{{ TransactionEle.vendor }}</td>
         </tr>
-        <tr>
-            <td style="color:#90FF8D">+ $20.50</td>
-            <td>08/14/2020</td>
-            <td>Paypal Inc.</td>
-        </tr>
-        <tr>
-            <td style="color:#FF8D8D">- $2.30</td>
-            <td>08/13/2020</td>
-            <td>The Coca-Cola Company</td>
-        </tr>
-        <tr>
-            <td style="color:#FF8D8D">- $8.56</td>
-            <td>08/15/2020</td>
-            <td>DoorDash Inc.</td>
-        </tr>
-        <tr>
-            <td style="color:#90FF8D">+ $20.50</td>
-            <td>08/14/2020</td>
-            <td>Paypal Inc.</td>
-        </tr>
-        <tr>
-            <td style="color:#FF8D8D">- $2.30</td>
-            <td>08/13/2020</td>
-            <td>The Coca-Cola Company</td>
-        </tr>
-        <tr>
-            <td style="color:#FF8D8D"></td>
-            <td></td>
-            <td></td>
-        </tr>
+        {{/each}}
     </tbody>
 </table>
 

@@ -56,6 +56,7 @@ app.post('/budgeting', function(req,res) {
 				const newTrans = new transaction(json.date, json.vendor, parseFloat(json.amount));
 				transArr.push(newTrans); 
 				console.log(transArr); //test
+				res.render('budgeting', {transactionData: transArr}); 
 		});
 	}
 }); 
