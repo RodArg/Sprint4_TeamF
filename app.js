@@ -53,8 +53,8 @@ app.post('/budgeting', function(req,res) {
 
 				if (err) throw err;
 
-				const newTrans = new transaction(new Date("2020-08-01"), json.vendor, parseFloat(json.amount)); //not working
-				console.log(newTrans);
+				const newTrans = new transaction(new Date(json.date), json.vendor, parseFloat(json.amount)); //not working
+				//console.log(newTrans);
 				transArr.push(newTrans); 
 				console.log(transArr); //test
 		});
