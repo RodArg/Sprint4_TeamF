@@ -12,21 +12,23 @@ def set_path():
     Detect and set proper path based on current directory
     """
     path = os.getcwd()
-    print(f"path:{path[-14:]}")
+
     if (path[-14:] == "TextExtraction"):
-        return os.listdir(path + "/images")  # When inside the IDE
-    return os.listdir(path + "/TextExtraction/images")  # When inside the command line
+        return os.path.join(path, "images")  # When inside the IDE
+    return os.path.join(path, "TextExtraction", "images")  # When inside the command line
 
 
 path = set_path()
 
+
+# print(f"path: {path}")
 
 def get_language(text):
     """
     Input: A single string of text in an identifiable language
     Output: a two-char string language identifier (en = english, de = deutsch, etc.)
     """
-    # print(f"text in get_language:\n{text}")
+    print(f"text in get_language:\n{text}")
     text = text.split()
     # print(f"text after split:\n{text}")
     text.reverse()
@@ -36,7 +38,7 @@ def get_language(text):
     for i in range(len(languages)):
         languages[i] = languages[i].lang  # languages[i] are language objects, .lang is a string
     language = mode(languages)
-    print(f"LANGUAGE: {language}")
+    print(f"language: {language}")
     return language
 
 
@@ -47,7 +49,7 @@ def translate_words(text, language=""):
         language: two-char string language symbol (en, fr, cn, etc) of source text
     Output: list of strings translated to english
     """
-    if(language == ""):
+    if (language == ""):
         language = get_language(text)
 
     text = text.split()
@@ -67,12 +69,12 @@ def get_text(img_name):
     """
     print("Looking at:", img_name)
     try:
-        img_path = os.path.join("images", img_name)
+        img_path = os.path.join(path, img_name)
+        # print(f"img path: {img_path}")
         img = cv2.imread(img_path)
         img_text = pytesseract.image_to_string(img)
 
-
-        print(f"file {img_name} text in get_text:\n{img_text}")
+        print(f"{img_name} text in get_text:\n{img_text}")
         print("-" * 20)  # Separator, delete if unnecessary
         # get_total(img_text)
         print("-" * 20)
@@ -80,7 +82,6 @@ def get_text(img_name):
         return img_text
     except:
         print(img_name, " image object unsupported")
-
 
 
 def get_total(img_text) -> float:
@@ -109,6 +110,7 @@ def get_total(img_text) -> float:
             print(f'total: {total}')
             return total
     return -1
+
 
 def get_company(split) -> str:
     # we identify a company name by checking from the top

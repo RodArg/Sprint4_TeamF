@@ -72,6 +72,7 @@ def console_test():
     Run when you want to interact with the console and provide input to choose
     """
     files = []
+    img_folder = os.listdir(tess.path)
     for img_name in img_folder:
         files.append(img_name)
     files = only_images(files)
@@ -101,12 +102,13 @@ def extract_text(filenames):
     Returns a list of long strings of receipts, not individual words
     """
     filenames = only_images(filenames)
+    # print(f"filenames in extract_text:\n{filenames}")
     receipts = []
     for filename in filenames:
         extract = tess.get_text(filename)
         # print(f"{filename} text after extract:\n{extract}")
         receipts.append(extract)
-    # print(f"RECEIPTS:\n{receipts}")
+    # print(f"receipts:\n{receipts}")
     return receipts
 
 
@@ -116,7 +118,7 @@ def get_date(text):
     Ex. >>> dateparser.parse('12/12/12')
         datetime.datetime(2012, 12, 12, 0, 0)
     """
-    print(f"text in get_date:\n{text}")
+    # print(f"text in get_date:\n{text}")
     dates = []
     language = tess.get_language(text)
     # If the text isn't in english we have to translate each word
@@ -136,7 +138,7 @@ def get_date(text):
         for date in dates:
             # print(f"date: {date}")
             date_parsed = dp.parse(date[0], settings={'STRICT_PARSING': True, 'REQUIRE_PARTS': ['day', 'month', 'year'], 'PREFER_DATES_FROM': 'past', 'locale': 'de-AT'})
-            print(f"DATEPARSED: {date_parsed} type: {type(date_parsed)}")
+            # print(f"dateparsed: {date_parsed} type: {type(date_parsed)}")
             if(date_parsed != None and date[1].year > 2000 and date[1].year <= datetime.date.today().year):
                 return date_parsed
     except:
@@ -163,18 +165,20 @@ def main():
     """
     filenames = sys.argv[1:]
     filenames = only_images(filenames)
+    print("filenames:", filenames)
     receipts = []
     texts = extract_text(filenames)
-
+    print("texts:", texts)
     for text in texts:
         receipt = Receipt(date=get_date(text),vendor="undefined",amount=get_amount(text))
         receipts.append(receipt)
     for receipt in receipts:
         print(receipt)
     # temp while I figure out whether we want to pass multiple jsons, for now only passes first json
-    print("JSON PAYLOAD:",receipts[0].to_json()) # just testing out the format
+    print(receipts[0].to_json()) # just testing out the format
     return receipts[0].to_json()
 
 main()
 # print("*"*10,"NOW SWITCHING TO CONSOLE","*"*10)
 # console_test() # Run this if you want to manually choose files
+
