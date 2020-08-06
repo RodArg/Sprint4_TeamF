@@ -110,9 +110,6 @@
 .register a1{
     padding-left: 40px;
 }
-<<<<<<< HEAD
->>>>>>> b8170e097d49924ef59b4f20f5972a730f8c54ba
-=======
 
 .image {
   padding-left: 50px;
@@ -167,4 +164,12 @@
 body {
     background: #003B70;
 }
->>>>>>> 8c8f973ec4d70d5886d38f774ef3576d21e0039e
+
+.budget form {
+    float:right;
+    padding-right: 90px;
+}
+
+.budget form label{
+    color:white;
+}
