@@ -147,7 +147,17 @@ def get_date(text):
 
 
 def get_vendor(text):
-    pass
+    """
+    Input: a string of text containing the receipt information
+    Output: a string of text referring to the vendor
+    """
+    words = text.split()
+    vendor = ""
+    i = 0
+    while(words[i].isalpha() and i < len(text)):
+        vendor = " ".join([vendor, words[i]])
+        i += 1
+    return vendor
 
 
 def get_amount(text):
@@ -170,8 +180,9 @@ def main():
     texts = extract_text(filenames)
     print("texts:", texts)
     for text in texts:
-        receipt = Receipt(date=get_date(text),vendor="undefined",amount=get_amount(text))
+        receipt = Receipt(date=get_date(text),vendor=get_vendor(text),amount=get_amount(text))
         receipts.append(receipt)
+        print(f"get_vendor: {get_vendor(text)} get_company: {tess.get_company(text.split())}")
     for receipt in receipts:
         print(receipt)
     # temp single return while I figure out whether we want to pass multiple jsons, for now only passes first json
