@@ -3,11 +3,9 @@ A repository where Team F will be assembling their web application solution for 
 
 ## Running the code
 # Command line
-From the Sprint4_TeamF or Sprint4_TeamF/TextExtraction directories
 * `python TextExtraction/console.py <filename.jpg>`
 
 # Application
-From the Sprint4_TeamF directory
 * `node app.js`
 * localhost:3000
 
