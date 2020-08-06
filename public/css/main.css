@@ -173,3 +173,42 @@ body {
 .budget form label{
     color:white;
 }
+
+.paleBlueRows {
+  width: 550px;
+  height: 300px;
+  color:white;
+  border-collapse: collapse;
+  background: #003B70;
+  position:absolute;
+  margin-left: 48%;
+  top: 340px;
+}
+
+.paleBlueRows tbody tr {
+  font-size: 13px;
+}
+
+
+.paleBlueRows td {
+  border: 1px solid white;
+}
+
+.paleBlueRows tr td:first-child {
+  border-left: 0;
+  border-bottom: 0;
+  padding-right: 15px;
+
+}
+.paleBlueRows tr td {
+  border-bottom: 0;
+  border-top: 0;
+  padding-left: 50px;
+}
+
+.paleBlueRows tr td:last-child {
+  border-right: 0;
+  padding-left: 40px;
+}
+
+
