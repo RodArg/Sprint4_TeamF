@@ -3,30 +3,14 @@ const path = require('path');
 const app = express();
 
 let {PythonShell} = require('python-shell');
-let pyshell = new PythonShell('TextExtraction/console.py');
+//let pyshell = new PythonShell('TextExtraction/console.py');
 
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: false }));
 
-let options = {
-  mode: 'text',
-  pythonPath: 'TextExtraction/pytess_extract.py', //isn't this repetitive? I don't fully understand the options
-  pythonOptions: ['-u'], // get print results in real-time
-  scriptPath: 'path/to/my/scripts', //I think we can skip this because we're only using one JS script?
-  args: ['value1', 'value2', 'value3'] //arguments to pass to the script
-};
-
-//why is pytess_extract used instead of console?
-PythonShell.run('TextExtraction/console.py', options, function (err, results) {
-	if (err) throw err;
-	console.log('results: %j', results);
-});
-
 /*
 
-// sends a message to the Python script via stdin
-pyshell.send('hello');
 
 pyshell.on('message', function (message) {
   // received a message sent from the Python script (a simple "print" statement)
@@ -58,7 +42,7 @@ const trans3 = new transaction(new Date(2020, 08, 03), 'CVS', 12.99);
 transArr.push(trans1, trans2, trans3);
 
 app.get('/', function(req, res) { //for a fake auth
-	if(req.query.password === 'pat') {
+	if(req.query.userName === 'pat' && req.query.password === 'pat') {
 		res.redirect('/budgeting');
 	}
 	else {
@@ -71,8 +55,26 @@ app.get('/budgeting', function(req,res) {
 });  
 
 app.post('/budgeting', function(req,res) {
+	if(req.body.length != 0) {
+		let fileNamePy = req.body.fileName;
+		let resultsJSON;
+		PythonShell.run('TextExtraction/console.py', 
+			{mode: 'text', args: [fileNamePy]}, 
+			function (err, results) {
+				//test
+				if(results === undefined) {
+					console.log('undefined results');
+				}
+				//
+				if (err) throw err;
+				resultsJSON = results;
+				console.log('results: %j', results);
+		});
+		const newTrans = new transaction(results.date, results.vendor, results.amount);
+		transArr.push(newTrans);
+	}
 	res.render('budgeting', {transactionData: transArr}); 
-}); //handle form submission data here
+}); 
 
 app.listen(3000);
 
