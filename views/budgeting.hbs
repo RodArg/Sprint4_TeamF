@@ -85,11 +85,20 @@
 
 
 
-		<table> 
+	<table> 
 			{{#each transArr as |TransactionEle| }}
-			date: {{ TransactionEle.date }}
-			company: {{ TransactionEle.vendor }}
-			amount: {{ TransactionEle.amount }}
+            <thead>
+                <th colspan="1"> Date </th>
+                <th colspan="1"> Vendor </th>
+                <th colspan="1"> Amount </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ TransactionEle.date }}</td>
+                    <td>{{ TransactionEle.vendor }}</td>
+                    <td>{{ TransactionEle.amount }}</td>
+                </tr>
+            </tbody>
 			{{/each}}
 		</table>
 	</div>
