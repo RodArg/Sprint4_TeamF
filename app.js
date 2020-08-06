@@ -19,12 +19,12 @@ class transaction {
 }
 
 const transArr = [];
-const trans1 = new transaction(new Date(2020, 08, 01), 'Wawa', 5.02);
-const trans2 = new transaction(new Date(2020, 08, 01), 'Shop Rite', 43.64);
-const trans3 = new transaction(new Date(2020, 08, 03), 'CVS', 12.99);
+const trans1 = new transaction("2020-08-01", 'Wawa', 5.02);
+const trans2 = new transaction("2020-08-01", 'Shop Rite', 43.64);
+const trans3 = new transaction("2020-08-03", 'CVS', 12.99);
 transArr.push(trans1, trans2, trans3);
 
-app.get('/', function(req, res) { //for a fake auth
+app.get('/', function(req, res) {
 	if(req.query.userName === 'pat' && req.query.password === 'pat') {
 		res.redirect('/budgeting');
 	}
@@ -53,13 +53,10 @@ app.post('/budgeting', function(req,res) {
 
 				if (err) throw err;
 
-				const newTrans = new transaction(new Date("2020-08-01"), json.vendor, parseFloat(json.amount)); //not working
-				console.log(newTrans);
+				const newTrans = new transaction(json.date, json.vendor, parseFloat(json.amount));
 				transArr.push(newTrans); 
 				console.log(transArr); //test
 		});
-
-		//for display: make a chart, get each date year, month, day for one col, vendor for second col, amount col
 	}
 }); 
 
