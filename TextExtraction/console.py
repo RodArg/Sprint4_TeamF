@@ -106,7 +106,7 @@ def extract_text(filenames):
         extract = tess.get_text(filename)
         # print(f"{filename} text after extract:\n{extract}")
         receipts.append(extract)
-    print(f"receipts:\n{receipts}")
+    # print(f"RECEIPTS:\n{receipts}")
     return receipts
 
 
@@ -136,7 +136,7 @@ def get_date(text):
         for date in dates:
             # print(f"date: {date}")
             date_parsed = dp.parse(date[0], settings={'STRICT_PARSING': True, 'REQUIRE_PARTS': ['day', 'month', 'year'], 'PREFER_DATES_FROM': 'past', 'locale': 'de-AT'})
-            print(f"dateparsed: {date_parsed} type: {type(date_parsed)}")
+            print(f"DATEPARSED: {date_parsed} type: {type(date_parsed)}")
             if(date_parsed != None and date[1].year > 2000 and date[1].year <= datetime.date.today().year):
                 return date_parsed
     except:
@@ -172,7 +172,7 @@ def main():
     for receipt in receipts:
         print(receipt)
     # temp while I figure out whether we want to pass multiple jsons, for now only passes first json
-    print(receipts[0].to_json()) # just testing out the format
+    print("JSON PAYLOAD:",receipts[0].to_json()) # just testing out the format
     return receipts[0].to_json()
 
 main()

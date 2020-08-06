@@ -36,7 +36,7 @@ def get_language(text):
     for i in range(len(languages)):
         languages[i] = languages[i].lang  # languages[i] are language objects, .lang is a string
     language = mode(languages)
-    print(f"language: {language}")
+    print(f"LANGUAGE: {language}")
     return language
 
 
@@ -67,7 +67,7 @@ def get_text(img_name):
     """
     print("Looking at:", img_name)
     try:
-        img_path = "images/" + img_name
+        img_path = os.path.join("images", img_name)
         img = cv2.imread(img_path)
         img_text = pytesseract.image_to_string(img)
 
