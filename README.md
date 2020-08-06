@@ -1,6 +1,14 @@
 # Sprint4_TeamF
 A repository where Team F will be assembling their web application solution for Citibank
 
+## Running the code
+# Command line
+* `python TextExtraction/console.py <filename.jpg>`
+
+# Application
+* `node app.js`
+* localhost:3000
+
 ## Dependencies
 1. OpenCV
     * used by PyTesseract for image transformations
@@ -20,7 +28,8 @@ A repository where Team F will be assembling their web application solution for 
    * `npm install express`
    * `npm install handlebars`
       * `or yarn add handlebars`
-
+   * `npm install python-shell`
+   * `npm install hbs`
 
         
 ## Notes
