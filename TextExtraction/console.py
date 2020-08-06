@@ -154,8 +154,9 @@ def get_vendor(text):
     words = text.split()
     vendor = ""
     i = 0
-    while(words[i].isalpha() and i < len(text)):
-        vendor = " ".join([vendor, words[i]])
+
+    while(words[i].rstrip(":.").isalpha() and i < len(text)):
+        vendor = " ".join([vendor, words[i].rstrip(":.")])
         i += 1
     return vendor
 
