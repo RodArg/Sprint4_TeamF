@@ -25,12 +25,7 @@ const trans3 = new transaction("2020-08-03", 'CVS', 12.99);
 transArr.push(trans1, trans2, trans3);
 
 app.get('/', function(req, res) {
-	if(req.query.userName === 'pat' && req.query.password === 'pat') {
-		res.redirect('/budgeting');
-	}
-	else {
-		res.render('login', {errorMessage: "Incorrect login. Try again."});
-	}
+	res.render('login', {errorMessage: "Incorrect login. Try again."});
 });
 
 app.get('/budgeting', function(req,res) {
