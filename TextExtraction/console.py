@@ -1,13 +1,3 @@
-"""
-## TODO:
-# Extract the date
-    # Done
-# Extract the vendor
-    # Company title
-    # We have to figure out how to isolate the vendor
-# Extract the payment
-    # Done
-"""
 import os
 import datetime
 import sys
@@ -17,6 +7,7 @@ import pytess_extract as tess
 import dateparser as dp
 from dateparser.search import search_dates
 
+YYYYMMDD = "%Y-%m-%d"
 
 class Receipt:
     def __init__(self, date=datetime.datetime(1,1,1), vendor="undefined", amount=0):
@@ -25,7 +16,10 @@ class Receipt:
         self.amount = amount
 
     def __str__(self):
-        return f"Date: {self.date} Vendor: {self.vendor} Amount: ${self.amount}"
+        return f"DATE: {self.date.strftime(YYYYMMDD)} VENDOR: {self.vendor} AMOUNT: ${self.amount}"
+
+    def __eq__(self, other):
+        return self.date == other.get_date and self.vendor == other.get_vendor and self.amount == other.get_amount
 
     def set_date(self, date):
         self.date = date
@@ -36,8 +30,11 @@ class Receipt:
     def set_amount(self, amount):
         self.amount = amount
 
-    def get_date(self):
+    def get_date(self, want_str=False):
         return self.date
+
+    def get_date_str(self):
+        return self.date.strftime(YYYYMMDD)
 
     def get_vendor(self):
         return self.vendor
@@ -46,12 +43,17 @@ class Receipt:
         return self.amount
 
     def to_json(self):
-        data = {"date": self.date.strftime("%Y-%m-%d"), # pass YYYY-MM-DD string
+        data = {"date": self.date.strftime(YYYYMMDD), # pass YYYY-MM-DD string
                 "vendor": self.vendor,
                 "amount": self.amount}
         json_data = json.dumps(data)
         return json_data
 
+def build_receipt(text):
+    date = get_date(text)
+    vendor = get_vendor(text)
+    amount = get_amount(text)
+    return Receipt(date, vendor, amount)
 
 def only_images(files):
     """
@@ -154,7 +156,6 @@ def get_vendor(text):
     words = text.split()
     vendor = ""
     i = 0
-
     while(words[i].rstrip(":.").isalpha() and i < len(text)):
         vendor = " ".join([vendor, words[i].rstrip(":.")])
         i += 1
@@ -166,7 +167,6 @@ def get_amount(text):
     return amount
 
 
-# Main
 def main():
     """
     * Read image filenames from the command line
@@ -175,23 +175,20 @@ def main():
     * Return json object: {"date":YYYY-MM-DD, "vendor":vendor_name, "amount":XX.XX}
     """
     filenames = sys.argv[1:]
+    if(len(sys.argv) == 1):
+        return
+
     filenames = only_images(filenames)
-    #print("filenames:", filenames)
     receipts = []
     texts = extract_text(filenames)
-    #print("texts:", texts)
-    for text in texts:
+
+    for i in range(len(texts)):
+        text = texts[i]
+        filename = filenames[i]
         receipt = Receipt(date=get_date(text),vendor=get_vendor(text),amount=get_amount(text))
         receipts.append(receipt)
-        print(f"get_vendor: {get_vendor(text)} get_company: {tess.get_company(text.split())}")
-    #for receipt in receipts:
-    #    print(receipt)
-    # temp while I figure out whether we want to pass multiple jsons, for now only passes first json
-    print("json:",receipts[0].to_json()) # just testing out the format
-    for receipt in receipts:
-        print(receipt)
-    # temp single return while I figure out whether we want to pass multiple jsons, for now only passes first json
-    print(receipts[0].to_json()) # just testing out the format
+        print(f"Receipt text:\n>\n{text}\n<")
+        print(f"{filename} receipt contents:\n{receipt}")
     return receipts[0].to_json()
 
 main()

@@ -9,10 +9,9 @@ translator = Translator()
 
 def set_path():
     """
-    Detect and set proper path based on current directory
+    Detect and set proper path to image based on current directory
     """
     path = os.getcwd()
-
     if (path[-14:] == "TextExtraction"):
         return os.path.join(path, "images")  # When inside the IDE
     return os.path.join(path, "TextExtraction", "images")  # When inside the command line
@@ -21,14 +20,12 @@ def set_path():
 path = set_path()
 
 
-# print(f"path: {path}")
-
 def get_language(text):
     """
     Input: A single string of text in an identifiable language
     Output: a two-char string language identifier (en = english, de = deutsch, etc.)
     """
-    print(f"text in get_language:\n{text}")
+    # print(f"text in get_language:\n{text}")
     text = text.split()
     # print(f"text after split:\n{text}")
     text.reverse()
@@ -67,18 +64,18 @@ def get_text(img_name):
     Input: The name of the image to be converted to text
     Output: A list of strings of images converted to text
     """
-    print("Looking at:", img_name)
+    print("Extracting:", img_name)
     try:
         img_path = os.path.join(path, img_name)
-        # print(f"img path: {img_path}")
         img = cv2.imread(img_path)
         img_text = pytesseract.image_to_string(img)
 
-        print(f"{img_name} text in get_text:\n{img_text}")
-        print("-" * 20)  # Separator, delete if unnecessary
+        # PRINTS FOR TESTS
+        # print(f"{img_name} text in get_text:\n{img_text}")
+        # print("-" * 20)  # Separator, delete if unnecessary
         # get_total(img_text)
-        print("-" * 20)
-        print(f"file {img_name} text right before returning:\n{img_text}")
+        # print("-" * 20)
+        # print(f"file {img_name} text right before returning:\n{img_text}")
         return img_text
     except:
         print(img_name, " image object unsupported")
@@ -88,26 +85,26 @@ def get_total(img_text) -> float:
     split = img_text.split()
 
     # testing prints
-    print("-" * 20)
-    print('SPLIT HERE:')
-    print(split)
-    print("-" * 20)
+    # print("-" * 20)
+    # print('SPLIT HERE:')
+    # print(split)
+    # print("-" * 20)
 
     for item in reversed(split):
         # we identify the total amount by checking for
         # a $ and a decimal number
         if '.' in item:
-            print(f'found item: {item}')
+            # print(f'found item: {item}')
             # get rid of all characters that are not a number or '.'
             # then return the cleaned total
             total = ''
             for c in item:
-                print(f'--- loop: {c}')
+                # print(f'--- loop: {c}')
                 if c == '.' or (ord(c) > 47 and ord(c) < 58):
-                    print(f'--- loop: add {c}')
+                    # print(f'--- loop: add {c}')
                     total += c
             total = round(float(total), 2)
-            print(f'total: {total}')
+            # print(f'total: {total}')
             return total
     return -1
 
@@ -138,5 +135,5 @@ def get_company(split) -> str:
             else:
                 company.append(item)
     company = " ".join(company)
-    print(f'company: {company}')
+    # print(f'company: {company}')
     return company
